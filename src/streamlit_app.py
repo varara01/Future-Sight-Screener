@@ -16,7 +16,7 @@ import classes.ConfigManager as ConfigManager
 import classes.Utility as Utility
 import classes.Fetcher as Fetcher
 
-st.set_page_config(layout="wide", page_title="Screeni-py", page_icon="📈")
+st.set_page_config(layout="wide", page_title="Future Sight", page_icon="📈")
 
 # Set protobuf to python to avoid TF error (This is a Slower infernece)
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"

@@ -439,80 +439,97 @@ with tab_similar:
         show_df_as_result_table()
         st.write('Click [**here**](https://medium.com/@joshi.pranjal5/spot-your-favourite-trading-setups-using-vector-databases-1651d747fbf0) to know How this Works? 🤔')
 
+# Tab for Future Sight
 with tab_about:
-    st.success(f'Future Sight', icon='🔍')
-    ac, bc = st.columns([2,1])
-    ac.info("""
-    💼 Future Sight
-    
-    🌐 [Company Website](https://www.futuresight.co.in)
-    
-    Future Sight is dedicated to providing personalized financial planning and investment strategies tailored to help clients achieve their financial goals. We offer a variety of investment options, including stocks, bonds, mutual funds, and algorithmic trading, all customized to individual risk tolerances and objectives. At Future Sight, we prioritize quality, honesty, and personalized service, and offer educational resources to support our clients on their financial journey.
-    """)
-    st.warning("ChangeLog:\n " + changelog[40:-3], icon='⚙️')
+    try:
+        from classes.Changelog import VERSION, changelog
+    except ImportError as e:
+        st.error(f"Error importing Changelog: {e}")
+    except Exception as e:
+        st.error(f"Unexpected error: {e}")
+    else:
+        st.success('Future Sight', icon='🔍')
+        ac, bc = st.columns([2, 1])
+        ac.info("""
+        💼 Future Sight
 
-        
+        🌐 [Company Website](https://www.futuresight.co.in)
+
+        Future Sight is dedicated to providing personalized financial planning and investment strategies tailored to help clients achieve their financial goals. We offer a variety of investment options, including stocks, bonds, mutual funds, and algorithmic trading, all customized to individual risk tolerances and objectives. At Future Sight, we prioritize quality, honesty, and personalized service, and offer educational resources to support our clients on their financial journey.
+        """)
+
+        if 'changelog' not in locals():
+            st.warning("ChangeLog variable is not defined.", icon='⚙️')
+        elif not isinstance(changelog, str):
+            st.warning("ChangeLog is not a string.", icon='⚙️')
+        elif len(changelog) < 43:
+            st.warning("ChangeLog is too short to slice.", icon='⚙️')
+        else:
+            st.warning("ChangeLog:\n " + changelog[40:-3], icon='⚙️')
+
+# Tab for Position Size Calculator
 with tab_psc:
-  ac, oc = st.columns([1, 1])
-  ac, bc = ac.columns([4, 1]) 
-  ac.subheader('💸 Position Size Calculator')
-  calculate_qty_btn = bc.button('**Calculate Qty**', type='primary', use_container_width=True)
+    ac, oc = st.columns([1, 1])
+    ac, bc = ac.columns([4, 1]) 
+    ac.subheader('💸 Position Size Calculator')
+    calculate_qty_btn = bc.button('**Calculate Qty**', type='primary', use_container_width=True)
 
-  ac, bc = st.columns([1, 1]) 
-  capital = ac.number_input(label='Capital Size', min_value=0, value=100000, help='Total Amount used for Trading/Investing')
-  if capital:
-    in_words = num2words(capital, lang='en_IN').title()
-    bc.write(f"<p style='margin-top:35px; font-weight: bold;'>Your Capital is Rs. {in_words}</p>", unsafe_allow_html=True)
+    ac, bc = st.columns([1, 1]) 
+    capital = ac.number_input(label='Capital Size', min_value=0, value=100000, help='Total Amount used for Trading/Investing')
+    if capital:
+        in_words = num2words(capital, lang='en_IN').title()
+        bc.write(f"<p style='margin-top:35px; font-weight: bold;'>Your Capital is Rs. {in_words}</p>", unsafe_allow_html=True)
 
-  risk = ac.number_input(label="% Risk on Capital for this trade", min_value=0.0, max_value=10.0, step=0.1, value=0.5, help='How many percentage of your total capital you want to risk if your Stoploss hits? If you want a max loss of 1000 for an account value of 100,000 then your risk is 1%. It is not advised to take Risk more than 5% per trade! Think about your maximum loss before you trade!')
-  if risk:
-    risk_rs = capital * (risk/100.0)
-    in_words = num2words(risk_rs, lang='en_IN').title()
-    bc.write(f"<p style='margin-top:40px; font-weight: bold;'>Your Risk for this trade is Rs. {in_words}</p>", unsafe_allow_html=True)
+    risk = ac.number_input(label="% Risk on Capital for this trade", min_value=0.0, max_value=10.0, step=0.1, value=0.5, help='How many percentage of your total capital you want to risk if your Stoploss hits? If you want a max loss of 1000 for an account value of 100,000 then your risk is 1%. It is not advised to take Risk more than 5% per trade! Think about your maximum loss before you trade!')
+    if risk:
+        risk_rs = capital * (risk/100.0)
+        in_words = num2words(risk_rs, lang='en_IN').title()
+        bc.write(f"<p style='margin-top:40px; font-weight: bold;'>Your Risk for this trade is Rs. {in_words}</p>", unsafe_allow_html=True)
 
-  ac.divider()
+    ac.divider()
 
-  sl = ac.number_input(label="Stoploss in points", min_value=0.0, step=0.1, help='Stoploss in Points or Rupees calculated by you by analyzing the chart.')
-  if sl > 0:
-    in_words = num2words(sl, lang='en_IN').title()
-    bc.write(f"<p style='margin-top:105px;'>Your SL is {in_words} Rs. per share.</p>", unsafe_allow_html=True)
-
-  ac.write('<center><h5>OR</h5></center>', unsafe_allow_html=True)
-
-  a1, a2 = ac.columns([1, 1])
-  price = a1.number_input(label="Entry Price", min_value=0.0, help='Entry price for Long/Short position')
-  percentage_sl = a2.number_input(label="% SL", min_value=0.0, max_value=100.0, value=5.0, help='Stoploss in %')
-  if sl == 0 and (price > 0 and percentage_sl > 0):
-    actual_sl = round(price * (percentage_sl / 100),2)
-    in_words = num2words(actual_sl, lang='en_IN').title()
-    bc.write(f"<p style='margin-top:230px;'>Your SL is Rs. {actual_sl} per share</p>", unsafe_allow_html=True)
-
-  if calculate_qty_btn:
+    sl = ac.number_input(label="Stoploss in points", min_value=0.0, step=0.1, help='Stoploss in Points or Rupees calculated by you by analyzing the chart.')
     if sl > 0:
-      qty = floor(risk_rs / sl)
-      oc.metric(label='Quantity', value=qty, delta=f'Max Loss: {(-1 * qty * sl)}', delta_color='inverse', help='Trade this Quantity to prevent excessive unplanned losses')
-    elif price > 0 and percentage_sl > 0:
-      qty = floor(risk_rs / actual_sl)
-      oc.metric(label='Quantity', value=qty, delta=f'Max Loss: {(-1 * qty * actual_sl)}', delta_color='inverse', help='Trade this Quantity to prevent excessive unplanned losses')
+        in_words = num2words(sl, lang='en_IN').title()
+        bc.write(f"<p style='margin-top:105px;'>Your SL is {in_words} Rs. per share.</p>", unsafe_allow_html=True)
 
+    ac.write('<center><h5>OR</h5></center>', unsafe_allow_html=True)
+
+    a1, a2 = ac.columns([1, 1])
+    price = a1.number_input(label="Entry Price", min_value=0.0, help='Entry price for Long/Short position')
+    percentage_sl = a2.number_input(label="% SL", min_value=0.0, max_value=100.0, value=5.0, help='Stoploss in %')
+    if sl == 0 and (price > 0 and percentage_sl > 0):
+        actual_sl = round(price * (percentage_sl / 100), 2)
+        in_words = num2words(actual_sl, lang='en_IN').title()
+        bc.write(f"<p style='margin-top:230px;'>Your SL is Rs. {actual_sl} per share</p>", unsafe_allow_html=True)
+
+    if calculate_qty_btn:
+        if sl > 0:
+            qty = floor(risk_rs / sl)
+            oc.metric(label='Quantity', value=qty, delta=f'Max Loss: {(-1 * qty * sl)}', delta_color='inverse', help='Trade this Quantity to prevent excessive unplanned losses')
+        elif price > 0 and percentage_sl > 0:
+            qty = floor(risk_rs / actual_sl)
+            oc.metric(label='Quantity', value=qty, delta=f'Max Loss: {(-1 * qty * actual_sl)}', delta_color='inverse', help='Trade this Quantity to prevent excessive unplanned losses')
+
+# Marquee HTML Component
 marquee_html = '''
 <!DOCTYPE html>
 <html>
 <head>
-	<style>
-		.sampleMarquee {
-			color: #f63366;
-			font-family: 'Ubuntu Mono', monospace;
-			background-color: #ffffff;
-			font-size: 18px;
-			line-height: 30px;
-			padding: px;
-			font-weight: bold;
-		}
-	</style>
+    <style>
+        .sampleMarquee {
+            color: #f63366;
+            font-family: 'Ubuntu Mono', monospace;
+            background-color: #ffffff;
+            font-size: 18px;
+            line-height: 30px;
+            padding: px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-	<marquee class="sampleMarquee" direction="left" scrollamount="7" behavior="scroll">This tool should be used only for Analysis/Study purposes. We do NOT provide any Buy/Sell advice for any Securities. Authors of this tool will not be held liable for any losses. Understand the Risks subjected with Markets before Investing.</marquee>
+    <marquee class="sampleMarquee" direction="left" scrollamount="7" behavior="scroll">This tool should be used only for Analysis/Study purposes. We do NOT provide any Buy/Sell advice for any Securities. Authors of this tool will not be held liable for any losses. Understand the Risks subjected with Markets before Investing.</marquee>
 </body>
 </html>
 '''

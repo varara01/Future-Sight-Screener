@@ -440,27 +440,17 @@ with tab_similar:
         st.write('Click [**here**](https://medium.com/@joshi.pranjal5/spot-your-favourite-trading-setups-using-vector-databases-1651d747fbf0) to know How this Works? 🤔')
 
 with tab_about:
-  from classes.Changelog import VERSION, changelog
+    st.success(f'Future Sight', icon='🔍')
+    ac, bc = st.columns([2,1])
+    ac.info("""
+    💼 Future Sight
+    
+    🌐 [Company Website](https://www.futuresight.co.in)
+    
+    Future Sight is dedicated to providing personalized financial planning and investment strategies tailored to help clients achieve their financial goals. We offer a variety of investment options, including stocks, bonds, mutual funds, and algorithmic trading, all customized to individual risk tolerances and objectives. At Future Sight, we prioritize quality, honesty, and personalized service, and offer educational resources to support our clients on their financial journey.
+    """)
+    st.warning("ChangeLog:\n " + changelog[40:-3], icon='⚙️')
 
-  st.success(f'Screeni-py v{VERSION}', icon='🔍')
-  ac, bc = st.columns([2,1])
-  ac.info("""
-👨🏻‍💻 Developed and Maintained by: Pranjal Joshi
-          
-🏠 Home Page: https://github.com/pranjal-joshi/Screeni-py
-          
-⚠️ Read/Post Issues here: https://github.com/pranjal-joshi/Screeni-py/issues
-          
-📣 Join Community Discussions: https://github.com/pranjal-joshi/Screeni-py/discussions
-          
-⬇️ Download latest software from https://github.com/pranjal-joshi/Screeni-py/releases/latest
-          
-💬 Join Telegram Group for discussion: https://t.me/+0Tzy08mR0do0MzNl
-          
-🎬 YouTube Playlist: Watch [**Here**](https://youtube.com/playlist?list=PLsGnKKT_974J3UVS8M6bxqePfWLeuMsBi&si=b6JNMf03IbA_SsXs) [![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCb_4n0rRHCL2dUbmRvS7psA)](https://www.youtube.com/@PranjalJoshi)
-          """)
-  bc.write('<iframe width="445" height="295" src="https://www.youtube.com/embed/videoseries?si=aKXpyKKgwCcWIjhW&amp;list=PLsGnKKT_974J3UVS8M6bxqePfWLeuMsBi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', unsafe_allow_html=True)
-  st.warning("ChangeLog:\n " + changelog[40:-3], icon='⚙️')
         
 with tab_psc:
   ac, oc = st.columns([1, 1])

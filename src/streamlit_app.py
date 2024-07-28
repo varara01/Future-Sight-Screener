@@ -277,7 +277,7 @@ if isDevVersion:
 elif guiUpdateMessage != "":
     ac.success(guiUpdateMessage, icon='❇️')
 
-telegram_url = "https://user-images.githubusercontent.com/6128978/217814499-7934edf6-fcc3-46d7-887e-7757c94e1632.png"
+telegram_url = "https://raw.githubusercontent.com/Malanidhruv/assets/main/Designer.png"
 bc.divider()
 bc.image(telegram_url, width=96)
 

@@ -268,9 +268,9 @@ def get_extra_inputs(tickerOption, executeOption, c_index=None, c_criteria=None,
 
 ac, bc = st.columns([13,1])
 
-ac.title('📈 Screeni-py')
+ac.title('')
 if guiUpdateMessage == "":
-  ac.subheader('Find Breakouts, Just in Time!')
+  ac.subheader('📈 Future Sight - Your pathway to success')
 
 if isDevVersion:
     ac.warning(guiUpdateMessage, icon='⚠️')

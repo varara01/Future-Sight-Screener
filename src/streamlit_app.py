@@ -268,8 +268,7 @@ def get_extra_inputs(tickerOption, executeOption, c_index=None, c_criteria=None,
 
 ac, bc = st.columns([13,1])
 
-if guiUpdateMessage == "":
-  ac.subheader('📈 Future Sight - Your pathway to success')
+ac.title('📈Future Sight - Your pathway to success')
 
 if isDevVersion:
     ac.warning(guiUpdateMessage, icon='⚠️')
